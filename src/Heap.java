@@ -30,6 +30,7 @@ class Heap {
             if (greatestChild > heap.get(i)) {
                 heap.set(i * ary + greatestChildIndex, heap.get(i));
                 heap.set(i, greatestChild);
+                maxHeapify(i * ary + greatestChildIndex);
             }
         }
     }
@@ -45,5 +46,34 @@ class Heap {
             }
             return children;
         }
+    }
+
+    private int extractMax() {
+        if (heap.size() < 1) {
+            System.out.println("Heap underflow.");
+            System.exit(1);
+        }
+        int max = heap.get(0);
+        heap.set(0, heap.get(heap.size() - 1));
+        heap.remove(heap.size() - 1);
+        maxHeapify(0);
+        return max;
+    }
+
+    private void increaseKey(int i, int key) {
+        if (key < heap.get(i))
+            System.out.println("New key is smaller than current key.");
+        heap.set(i, key);
+        while (i > 0 && heap.get(i / ary) < heap.get(i)) {
+            int exchangeTemp = heap.get(i / ary);
+            heap.set(i / ary, heap.get(i));
+            heap.set(i, exchangeTemp);
+            i = i / ary;
+        }
+    }
+
+    private void insert(int key) {
+        heap.add(-10000);
+        increaseKey(heap.size() - 1, key);
     }
 }
